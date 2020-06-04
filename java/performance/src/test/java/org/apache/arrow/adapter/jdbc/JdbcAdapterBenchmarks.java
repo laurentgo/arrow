@@ -248,7 +248,7 @@ public class JdbcAdapterBenchmarks {
 
     private JdbcToArrowConfig config;
 
-    private ArrowVectorIterator iter;
+    private IndirectArrowVectorIterator iter;
 
     private VectorSchemaRoot root;
 
@@ -281,7 +281,7 @@ public class JdbcAdapterBenchmarks {
       statement = conn.createStatement();
       resultSet = statement.executeQuery(QUERY);
 
-      iter = JdbcToArrow.sqlToArrowVectorIterator(resultSet, config);
+      iter = IndirectArrowVectorIterator.create(resultSet, config);
       root = iter.next();
       iter.compositeConsumer.resetVectorSchemaRoot(root);
     }

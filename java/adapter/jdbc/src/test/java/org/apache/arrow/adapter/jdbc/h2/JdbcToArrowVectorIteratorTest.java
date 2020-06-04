@@ -17,7 +17,14 @@
 
 package org.apache.arrow.adapter.jdbc.h2;
 
-import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.*;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getBinaryValues;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getBooleanValues;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getCharArray;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getDecimalValues;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getDoubleValues;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getFloatValues;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getIntValues;
+import static org.apache.arrow.adapter.jdbc.JdbcToArrowTestHelper.getLongValues;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

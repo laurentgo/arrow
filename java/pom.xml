@@ -130,6 +130,7 @@
             <exclude>**/*.checkstyle</exclude>
             <exclude>**/.classpath</exclude>
             <exclude>**/.settings/**</exclude>
+            <exclude>**/.factorypath</exclude>
             <exclude>.*/**</exclude>
             <exclude>**/*.patch</exclude>
             <exclude>**/*.pb.cc</exclude>
@@ -401,14 +402,14 @@
             <forkCount>${forkCount}</forkCount>
             <reuseForks>true</reuseForks>
             <systemPropertyVariables>
+              <!-- Note: changing the below configuration might increase the max allocation size for a vector
+              which in turn can cause OOM. -->
+              <arrow.vector.max_allocation_bytes>1048576</arrow.vector.max_allocation_bytes>
               <java.io.tmpdir>${project.build.directory}</java.io.tmpdir>
               <io.netty.tryReflectionSetAccessible>true</io.netty.tryReflectionSetAccessible>
               <arrow.vector.max_allocation_bytes>1048576</arrow.vector.max_allocation_bytes>
               <user.timezone>UTC</user.timezone>
             </systemPropertyVariables>
-            <!-- Note: changing the below configuration might increase the max allocation size for a vector
-            which in turn can cause OOM. -->
-            <argLine>-Darrow.vector.max_allocation_bytes=1048576</argLine>
           </configuration>
         </plugin>
         <plugin>

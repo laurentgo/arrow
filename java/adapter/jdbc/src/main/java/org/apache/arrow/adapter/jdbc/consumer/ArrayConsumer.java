@@ -35,7 +35,7 @@ public abstract class ArrayConsumer extends BaseConsumer<ListVector> {
    * Creates a consumer for {@link ListVector}.
    */
   public static ArrayConsumer createConsumer(
-          ListVector vector, JdbcConsumer delegate, int index, boolean nullable) {
+          ListVector vector, JdbcConsumer<ListVector> delegate, int index, boolean nullable) {
     if (nullable) {
       return new ArrayConsumer.NullableArrayConsumer(vector, delegate, index);
     } else {
@@ -43,7 +43,7 @@ public abstract class ArrayConsumer extends BaseConsumer<ListVector> {
     }
   }
 
-  protected final JdbcConsumer delegate;
+  protected final JdbcConsumer<ListVector> delegate;
 
   private final ValueVector innerVector;
 
@@ -52,7 +52,7 @@ public abstract class ArrayConsumer extends BaseConsumer<ListVector> {
   /**
    * Instantiate a ArrayConsumer.
    */
-  public ArrayConsumer(ListVector vector, JdbcConsumer delegate, int index) {
+  public ArrayConsumer(ListVector vector, JdbcConsumer<ListVector> delegate, int index) {
     super(vector, index);
     this.delegate = delegate;
     this.innerVector = vector.getDataVector();
@@ -78,7 +78,7 @@ public abstract class ArrayConsumer extends BaseConsumer<ListVector> {
     /**
      * Instantiate a nullable array consumer.
      */
-    public NullableArrayConsumer(ListVector vector, JdbcConsumer delegate, int index) {
+    public NullableArrayConsumer(ListVector vector, JdbcConsumer<ListVector> delegate, int index) {
       super(vector, delegate, index);
     }
 
