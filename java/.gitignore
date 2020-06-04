@@ -3,6 +3,7 @@
 .classpath
 .checkstyle
 .settings/
+.factorypath
 .idea/
 TAGS
 *.log
