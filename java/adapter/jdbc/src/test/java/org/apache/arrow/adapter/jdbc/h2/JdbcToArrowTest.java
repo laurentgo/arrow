@@ -132,6 +132,7 @@ public class JdbcToArrowTest extends AbstractJdbcToArrowTest {
   /**
    * Test Method to test JdbcToArrow Functionality for various H2 DB based datatypes with only one test data file.
    */
+  @Override
   @Test
   public void testJdbcToArrowValues() throws SQLException, IOException {
     testDataSets(JdbcToArrow.sqlToArrow(conn, table.getQuery(), new RootAllocator(Integer.MAX_VALUE),
@@ -166,6 +167,7 @@ public class JdbcToArrowTest extends AbstractJdbcToArrowTest {
    *
    * @param root VectorSchemaRoot for test
    */
+  @Override
   public void testDataSets(VectorSchemaRoot root) {
     JdbcToArrowTestHelper.assertFieldMetadataIsEmpty(root);
 
