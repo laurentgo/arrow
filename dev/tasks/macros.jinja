@@ -351,11 +351,10 @@ on:
 
 {% macro github_set_sccache_envvars(sccache_key_prefix = "sccache") %}
   {% set sccache_vars =  {
-            "AWS_ACCESS_KEY_ID": '${{ secrets.AWS_ACCESS_KEY_ID }}',
-            "AWS_SECRET_ACCESS_KEY": '${{ secrets.AWS_SECRET_ACCESS_KEY }}',
-            "SCCACHE_BUCKET": '${{ secrets.SCCACHE_BUCKET }}',
-            "SCCACHE_REGION": '${{ secrets.SCCACHE_REGION }}',
-            "SCCACHE_S3_KEY_PREFIX": sccache_key_prefix 
+            "SCCACHE_GHA_ENABLED": "on",
+            "SCCACHE_GHA_VERSION": "1",
+            "ACTIONS_CACHE_URL": '${{ env.ACTIONS_CACHE_URL }}',
+            "ACTIONS_RUNTIME_TOKEN": '${{ env.ACTIONS_RUNTIME_TOKEN }}',
           }
  %}
   {% for key, value in sccache_vars.items() %}
