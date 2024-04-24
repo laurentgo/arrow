@@ -137,3 +137,5 @@ jobs:
           ARCHERY_DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
         continue-on-error: true
         run: archery docker push conda-python-java-integration
+      - name: Permission check
+        run: ls -lR
