@@ -595,7 +595,6 @@
             <exclude>**/logback.xml</exclude>
           </excludes>
           <archive>
-            <index>true</index>
             <manifestEntries>
               <Extension-Name>org.apache.arrow</Extension-Name>
               <Built-By>${username}</Built-By>
