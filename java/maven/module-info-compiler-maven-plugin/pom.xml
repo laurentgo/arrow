@@ -74,9 +74,9 @@
       <plugins>
         <plugin>
           <groupId>com.gradle</groupId>
-          <artifactId>gradle-enterprise-maven-extension</artifactId>
+          <artifactId>develocity-maven-extension</artifactId>
           <configuration>
-            <gradleEnterprise>
+            <develocity>
               <normalization>
                 <runtimeClassPath>
                   <ignoredFiles>
@@ -84,7 +84,7 @@
                   </ignoredFiles>
                 </runtimeClassPath>
               </normalization>
-            </gradleEnterprise>
+            </develocity>
           </configuration>
         </plugin>
       </plugins>
