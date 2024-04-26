@@ -89,7 +89,7 @@ if [ "${ARROW_JAVA_JNI}" = "ON" ]; then
   mvn="${mvn} -Darrow.cpp.build.dir=${java_jni_dist_dir} -Parrow-jni"
 fi
 
-${mvn} clean install
+${mvn} clean install -X -l maven.log
 
 if [ "${BUILD_DOCS_JAVA}" == "ON" ]; then
   # HTTP pooling is turned of to avoid download issues https://issues.apache.org/jira/browse/ARROW-11633
@@ -97,5 +97,7 @@ if [ "${BUILD_DOCS_JAVA}" == "ON" ]; then
   ${mvn} -Dcheckstyle.skip=true -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false clean install site
   rsync -a ${arrow_dir}/java/target/site/apidocs/ ${build_dir}/docs/java/reference
 fi
+
+ls -lR
 
 popd

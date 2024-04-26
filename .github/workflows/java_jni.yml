@@ -137,3 +137,10 @@ jobs:
           ARCHERY_DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
         continue-on-error: true
         run: archery docker push conda-python-java-integration
+      - name: Get Maven.log
+        uses: actions/upload-artifact@v4
+        with:
+          name: maven.log
+          path: java/maven.log
+      - name: Permission check
+        run: ls -lR

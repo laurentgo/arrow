@@ -55,7 +55,8 @@ if [ "${#projects[@]}" -gt 0 ]; then
 fi
 
 if [ "${ARROW_JAVA_CDATA}" = "ON" ]; then
-  ${mvn} clean test -Parrow-c-data -pl c -Darrow.c.jni.dist.dir=${java_jni_dist_dir}
+  ${mvn} clean test -Parrow-c-data -pl c -Darrow.c.jni.dist.dir=${java_jni_dist_dir} -X
 fi
 
+ls -lR
 popd
