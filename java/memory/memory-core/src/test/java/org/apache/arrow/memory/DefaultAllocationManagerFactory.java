@@ -31,13 +31,13 @@ public class DefaultAllocationManagerFactory implements AllocationManager.Factor
   private static final ArrowBuf EMPTY = new ArrowBuf(ReferenceManager.NO_OP,
       null,
       0,
-      MemoryUtil.UNSAFE.allocateMemory(0));
+      MemoryUtil.allocateMemory(0));
 
   @Override
   public AllocationManager create(BufferAllocator accountingAllocator, long size) {
     return new AllocationManager(accountingAllocator) {
       private final long allocatedSize = size;
-      private final long address = MemoryUtil.UNSAFE.allocateMemory(size);
+      private final long address = MemoryUtil.allocateMemory(size);
 
       @Override
       public long getSize() {
@@ -51,7 +51,7 @@ public class DefaultAllocationManagerFactory implements AllocationManager.Factor
 
       @Override
       protected void release0() {
-        MemoryUtil.UNSAFE.freeMemory(address);
+        MemoryUtil.freeMemory(address);
       }
     };
   }

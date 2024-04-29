@@ -889,7 +889,7 @@ public abstract class BaseFixedWidthVector extends BaseValueVector
       BitVectorHelper.unsetBit(this.getValidityBuffer(), thisIndex);
     } else {
       BitVectorHelper.setBit(this.getValidityBuffer(), thisIndex);
-      MemoryUtil.UNSAFE.copyMemory(from.getDataBuffer().memoryAddress() + (long) fromIndex * typeWidth,
+      MemoryUtil.copyMemory(from.getDataBuffer().memoryAddress() + (long) fromIndex * typeWidth,
               this.getDataBuffer().memoryAddress() + (long) thisIndex * typeWidth, typeWidth);
     }
   }

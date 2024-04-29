@@ -31,7 +31,7 @@ public final class UnsafeAllocationManager extends AllocationManager {
   private static final ArrowBuf EMPTY = new ArrowBuf(ReferenceManager.NO_OP,
       null,
       0,
-      MemoryUtil.UNSAFE.allocateMemory(0)
+      MemoryUtil.allocateMemory(0)
   );
 
   public static final AllocationManager.Factory FACTORY = new Factory() {
@@ -52,7 +52,7 @@ public final class UnsafeAllocationManager extends AllocationManager {
 
   UnsafeAllocationManager(BufferAllocator accountingAllocator, long requestedSize) {
     super(accountingAllocator);
-    allocatedAddress = MemoryUtil.UNSAFE.allocateMemory(requestedSize);
+    allocatedAddress = MemoryUtil.allocateMemory(requestedSize);
     allocatedSize = requestedSize;
   }
 
@@ -68,7 +68,7 @@ public final class UnsafeAllocationManager extends AllocationManager {
 
   @Override
   protected void release0() {
-    MemoryUtil.UNSAFE.freeMemory(allocatedAddress);
+    MemoryUtil.freeMemory(allocatedAddress);
   }
 
 }

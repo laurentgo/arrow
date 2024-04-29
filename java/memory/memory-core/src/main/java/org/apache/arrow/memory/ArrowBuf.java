@@ -331,7 +331,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public long getLong(long index) {
     chk(index, LONG_SIZE);
-    return MemoryUtil.UNSAFE.getLong(addr(index));
+    return MemoryUtil.getLong(addr(index));
   }
 
   /**
@@ -343,7 +343,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public void setLong(long index, long value) {
     chk(index, LONG_SIZE);
-    MemoryUtil.UNSAFE.putLong(addr(index), value);
+    MemoryUtil.putLong(addr(index), value);
   }
 
   /**
@@ -366,7 +366,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public void setFloat(long index, float value) {
     chk(index, FLOAT_SIZE);
-    MemoryUtil.UNSAFE.putInt(addr(index), Float.floatToRawIntBits(value));
+    MemoryUtil.putInt(addr(index), Float.floatToRawIntBits(value));
   }
 
   /**
@@ -389,7 +389,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public void setDouble(long index, double value) {
     chk(index, DOUBLE_SIZE);
-    MemoryUtil.UNSAFE.putLong(addr(index), Double.doubleToRawLongBits(value));
+    MemoryUtil.putLong(addr(index), Double.doubleToRawLongBits(value));
   }
 
   /**
@@ -412,7 +412,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public void setChar(long index, int value) {
     chk(index, SHORT_SIZE);
-    MemoryUtil.UNSAFE.putShort(addr(index), (short) value);
+    MemoryUtil.putShort(addr(index), (short) value);
   }
 
   /**
@@ -424,7 +424,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public int getInt(long index) {
     chk(index, INT_SIZE);
-    return MemoryUtil.UNSAFE.getInt(addr(index));
+    return MemoryUtil.getInt(addr(index));
   }
 
   /**
@@ -436,7 +436,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public void setInt(long index, int value) {
     chk(index, INT_SIZE);
-    MemoryUtil.UNSAFE.putInt(addr(index), value);
+    MemoryUtil.putInt(addr(index), value);
   }
 
   /**
@@ -448,7 +448,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public short getShort(long index) {
     chk(index, SHORT_SIZE);
-    return MemoryUtil.UNSAFE.getShort(addr(index));
+    return MemoryUtil.getShort(addr(index));
   }
 
   /**
@@ -471,7 +471,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public void setShort(long index, short value) {
     chk(index, SHORT_SIZE);
-    MemoryUtil.UNSAFE.putShort(addr(index), value);
+    MemoryUtil.putShort(addr(index), value);
   }
 
   /**
@@ -483,7 +483,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public void setByte(long index, int value) {
     chk(index, 1);
-    MemoryUtil.UNSAFE.putByte(addr(index), (byte) value);
+    MemoryUtil.putByte(addr(index), (byte) value);
   }
 
   /**
@@ -495,7 +495,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public void setByte(long index, byte value) {
     chk(index, 1);
-    MemoryUtil.UNSAFE.putByte(addr(index), value);
+    MemoryUtil.putByte(addr(index), value);
   }
 
   /**
@@ -507,7 +507,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public byte getByte(long index) {
     chk(index, 1);
-    return MemoryUtil.UNSAFE.getByte(addr(index));
+    return MemoryUtil.getByte(addr(index));
   }
 
 
@@ -585,7 +585,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public void writeByte(byte value) {
     ensureWritable(1);
-    MemoryUtil.UNSAFE.putByte(addr(writerIndex), value);
+    MemoryUtil.putByte(addr(writerIndex), value);
     ++writerIndex;
   }
 
@@ -596,7 +596,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public void writeByte(int value) {
     ensureWritable(1);
-    MemoryUtil.UNSAFE.putByte(addr(writerIndex), (byte) value);
+    MemoryUtil.putByte(addr(writerIndex), (byte) value);
     ++writerIndex;
   }
 
@@ -629,7 +629,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public void writeShort(int value) {
     ensureWritable(SHORT_SIZE);
-    MemoryUtil.UNSAFE.putShort(addr(writerIndex), (short) value);
+    MemoryUtil.putShort(addr(writerIndex), (short) value);
     writerIndex += SHORT_SIZE;
   }
 
@@ -639,7 +639,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public void writeInt(int value) {
     ensureWritable(INT_SIZE);
-    MemoryUtil.UNSAFE.putInt(addr(writerIndex), value);
+    MemoryUtil.putInt(addr(writerIndex), value);
     writerIndex += INT_SIZE;
   }
 
@@ -649,7 +649,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public void writeLong(long value) {
     ensureWritable(LONG_SIZE);
-    MemoryUtil.UNSAFE.putLong(addr(writerIndex), value);
+    MemoryUtil.putLong(addr(writerIndex), value);
     writerIndex += LONG_SIZE;
   }
 
@@ -659,7 +659,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public void writeFloat(float value) {
     ensureWritable(FLOAT_SIZE);
-    MemoryUtil.UNSAFE.putInt(addr(writerIndex), Float.floatToRawIntBits(value));
+    MemoryUtil.putInt(addr(writerIndex), Float.floatToRawIntBits(value));
     writerIndex += FLOAT_SIZE;
   }
 
@@ -669,7 +669,7 @@ public final class ArrowBuf implements AutoCloseable {
    */
   public void writeDouble(double value) {
     ensureWritable(DOUBLE_SIZE);
-    MemoryUtil.UNSAFE.putLong(addr(writerIndex), Double.doubleToRawLongBits(value));
+    MemoryUtil.putLong(addr(writerIndex), Double.doubleToRawLongBits(value));
     writerIndex += DOUBLE_SIZE;
   }
 
@@ -737,7 +737,7 @@ public final class ArrowBuf implements AutoCloseable {
     if (length != 0) {
       // copy "length" bytes from this ArrowBuf starting at addr(index) address
       // into dst byte array at dstIndex onwards
-      MemoryUtil.copyMemory(null, addr(index), dst, MemoryUtil.BYTE_ARRAY_BASE_OFFSET + dstIndex, length);
+      MemoryUtil.copyFromMemory(addr(index), dst, dstIndex, length);
     }
   }
 
@@ -774,7 +774,7 @@ public final class ArrowBuf implements AutoCloseable {
     if (length > 0) {
       // copy "length" bytes from src byte array at the starting index (srcIndex)
       // into this ArrowBuf starting at address "addr(index)"
-      MemoryUtil.copyMemory(src, MemoryUtil.BYTE_ARRAY_BASE_OFFSET + srcIndex, null, addr(index), length);
+      MemoryUtil.copyToMemory(src, srcIndex, addr(index), length);
     }
   }
 
@@ -800,7 +800,7 @@ public final class ArrowBuf implements AutoCloseable {
         // at address srcAddress into the dst ByteBuffer starting at
         // address dstAddress
         final long dstAddress = MemoryUtil.getByteBufferAddress(dst) + dst.position();
-        MemoryUtil.copyMemory(null, srcAddress, null, dstAddress, dst.remaining());
+        MemoryUtil.copyMemory(srcAddress, dstAddress, dst.remaining());
         // after copy, bump the next write position for the dst ByteBuffer
         dst.position(dst.position() + dst.remaining());
       } else if (dst.hasArray()) {
@@ -808,8 +808,7 @@ public final class ArrowBuf implements AutoCloseable {
         // at address srcAddress into the dst ByteBuffer starting at
         // index dstIndex
         final int dstIndex = dst.arrayOffset() + dst.position();
-        MemoryUtil.copyMemory(
-                null, srcAddress, dst.array(), MemoryUtil.BYTE_ARRAY_BASE_OFFSET + dstIndex, dst.remaining());
+        MemoryUtil.copyFromMemory(srcAddress, dst.array(), dstIndex, dst.remaining());
         // after copy, bump the next write position for the dst ByteBuffer
         dst.position(dst.position() + dst.remaining());
       } else {
@@ -837,15 +836,14 @@ public final class ArrowBuf implements AutoCloseable {
         // copy src.remaining() bytes of data from src ByteBuffer starting at
         // address srcAddress into this ArrowBuf starting at address dstAddress
         final long srcAddress = MemoryUtil.getByteBufferAddress(src) + src.position();
-        MemoryUtil.copyMemory(null, srcAddress, null, dstAddress, length);
+        MemoryUtil.copyMemory(srcAddress, dstAddress, length);
         // after copy, bump the next read position for the src ByteBuffer
         src.position(src.position() + length);
       } else if (src.hasArray()) {
         // copy src.remaining() bytes of data from src ByteBuffer starting at
         // index srcIndex into this ArrowBuf starting at address dstAddress
         final int srcIndex = src.arrayOffset() + src.position();
-        MemoryUtil.copyMemory(
-                src.array(), MemoryUtil.BYTE_ARRAY_BASE_OFFSET + srcIndex, null, dstAddress, length);
+        MemoryUtil.copyToMemory(src.array(), srcIndex, dstAddress, length);
         // after copy, bump the next read position for the src ByteBuffer
         src.position(src.position() + length);
       } else {
@@ -855,19 +853,19 @@ public final class ArrowBuf implements AutoCloseable {
           // copy word at a time
           while (length - 128 >= LONG_SIZE) {
             for (int x = 0; x < 16; x++) {
-              MemoryUtil.UNSAFE.putLong(dstAddress, src.getLong());
+              MemoryUtil.putLong(dstAddress, src.getLong());
               length -= LONG_SIZE;
               dstAddress += LONG_SIZE;
             }
           }
           while (length >= LONG_SIZE) {
-            MemoryUtil.UNSAFE.putLong(dstAddress, src.getLong());
+            MemoryUtil.putLong(dstAddress, src.getLong());
             length -= LONG_SIZE;
             dstAddress += LONG_SIZE;
           }
           // copy last byte
           while (length > 0) {
-            MemoryUtil.UNSAFE.putByte(dstAddress, src.get());
+            MemoryUtil.putByte(dstAddress, src.get());
             --length;
             ++dstAddress;
           }
@@ -897,7 +895,7 @@ public final class ArrowBuf implements AutoCloseable {
       // srcAddress into this ArrowBuf at address dstAddress
       final long srcAddress = MemoryUtil.getByteBufferAddress(src) + srcIndex;
       final long dstAddress = addr(index);
-      MemoryUtil.copyMemory(null, srcAddress, null, dstAddress, length);
+      MemoryUtil.copyMemory(srcAddress, dstAddress, length);
     } else {
       if (srcIndex == 0 && src.capacity() == length) {
         // copy the entire ByteBuffer from start to end of length
@@ -937,7 +935,7 @@ public final class ArrowBuf implements AutoCloseable {
       // dstAddress
       final long srcAddress = addr(index);
       final long dstAddress = dst.memoryAddress() + (long) dstIndex;
-      MemoryUtil.copyMemory(null, srcAddress, null, dstAddress, length);
+      MemoryUtil.copyMemory(srcAddress, dstAddress, length);
     }
   }
 
@@ -967,7 +965,7 @@ public final class ArrowBuf implements AutoCloseable {
       // dstAddress
       final long srcAddress = src.memoryAddress() + srcIndex;
       final long dstAddress = addr(index);
-      MemoryUtil.copyMemory(null, srcAddress, null, dstAddress, length);
+      MemoryUtil.copyMemory(srcAddress, dstAddress, length);
     }
   }
 
@@ -987,7 +985,7 @@ public final class ArrowBuf implements AutoCloseable {
     checkIndex(index, length);
     final long srcAddress = src.memoryAddress() + src.readerIndex;
     final long dstAddress = addr(index);
-    MemoryUtil.copyMemory(null, srcAddress, null, dstAddress, length);
+    MemoryUtil.copyMemory(srcAddress, dstAddress, length);
     src.readerIndex(src.readerIndex + length);
   }
 
@@ -1012,7 +1010,7 @@ public final class ArrowBuf implements AutoCloseable {
       if (readBytes > 0) {
         // copy readBytes length of data from the tmp byte array starting
         // at srcIndex 0 into this ArrowBuf starting at address addr(index)
-        MemoryUtil.copyMemory(tmp, MemoryUtil.BYTE_ARRAY_BASE_OFFSET, null, addr(index), readBytes);
+        MemoryUtil.copyToMemory(tmp, 0, addr(index), readBytes);
       }
     }
     return readBytes;
@@ -1034,7 +1032,7 @@ public final class ArrowBuf implements AutoCloseable {
       // copy length bytes of data from this ArrowBuf starting at
       // address addr(index) into the tmp byte array starting at index 0
       byte[] tmp = new byte[length];
-      MemoryUtil.copyMemory(null, addr(index), tmp, MemoryUtil.BYTE_ARRAY_BASE_OFFSET, length);
+      MemoryUtil.copyFromMemory(addr(index), tmp, 0, length);
       // write the copied data to output stream
       out.write(tmp);
     }
@@ -1173,7 +1171,7 @@ public final class ArrowBuf implements AutoCloseable {
   public ArrowBuf setZero(long index, long length) {
     if (length != 0) {
       this.checkIndex(index, length);
-      MemoryUtil.UNSAFE.setMemory(this.addr + index, length, (byte) 0);
+      MemoryUtil.setMemory(this.addr + index, length, (byte) 0);
     }
     return this;
   }
@@ -1190,7 +1188,7 @@ public final class ArrowBuf implements AutoCloseable {
   public ArrowBuf setOne(int index, int length) {
     if (length != 0) {
       this.checkIndex(index, length);
-      MemoryUtil.UNSAFE.setMemory(this.addr + index, length, (byte) 0xff);
+      MemoryUtil.setMemory(this.addr + index, length, (byte) 0xff);
     }
     return this;
   }
@@ -1205,7 +1203,7 @@ public final class ArrowBuf implements AutoCloseable {
   public ArrowBuf setOne(long index, long length) {
     if (length != 0) {
       this.checkIndex(index, length);
-      MemoryUtil.UNSAFE.setMemory(this.addr + index, length, (byte) 0xff);
+      MemoryUtil.setMemory(this.addr + index, length, (byte) 0xff);
     }
     return this;
   }

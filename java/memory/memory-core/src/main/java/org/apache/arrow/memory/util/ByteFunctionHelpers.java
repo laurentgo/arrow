@@ -64,8 +64,8 @@ public class ByteFunctionHelpers {
 
       while (n > 63) {
         for (int x = 0; x < 8; x++) {
-          long leftLong = MemoryUtil.UNSAFE.getLong(lPos);
-          long rightLong = MemoryUtil.UNSAFE.getLong(rPos);
+          long leftLong = MemoryUtil.getLong(lPos);
+          long rightLong = MemoryUtil.getLong(rPos);
           if (leftLong != rightLong) {
             return 0;
           }
@@ -76,8 +76,8 @@ public class ByteFunctionHelpers {
       }
 
       while (n > 7) {
-        long leftLong = MemoryUtil.UNSAFE.getLong(lPos);
-        long rightLong = MemoryUtil.UNSAFE.getLong(rPos);
+        long leftLong = MemoryUtil.getLong(lPos);
+        long rightLong = MemoryUtil.getLong(rPos);
         if (leftLong != rightLong) {
           return 0;
         }
@@ -87,8 +87,8 @@ public class ByteFunctionHelpers {
       }
 
       if (n > 3) {
-        int leftInt = MemoryUtil.UNSAFE.getInt(lPos);
-        int rightInt = MemoryUtil.UNSAFE.getInt(rPos);
+        int leftInt = MemoryUtil.getInt(lPos);
+        int rightInt = MemoryUtil.getInt(rPos);
         if (leftInt != rightInt) {
           return 0;
         }
@@ -98,8 +98,8 @@ public class ByteFunctionHelpers {
       }
 
       while (n-- != 0) {
-        byte leftByte = MemoryUtil.UNSAFE.getByte(lPos);
-        byte rightByte = MemoryUtil.UNSAFE.getByte(rPos);
+        byte leftByte = MemoryUtil.getByte(lPos);
+        byte rightByte = MemoryUtil.getByte(rPos);
         if (leftByte != rightByte) {
           return 0;
         }
@@ -154,8 +154,8 @@ public class ByteFunctionHelpers {
 
     while (n > 63) {
       for (int x = 0; x < 8; x++) {
-        long leftLong = MemoryUtil.UNSAFE.getLong(lPos);
-        long rightLong = MemoryUtil.UNSAFE.getLong(rPos);
+        long leftLong = MemoryUtil.getLong(lPos);
+        long rightLong = MemoryUtil.getLong(rPos);
         if (leftLong != rightLong) {
           if (LITTLE_ENDIAN) {
             return unsignedLongCompare(Long.reverseBytes(leftLong), Long.reverseBytes(rightLong));
@@ -170,8 +170,8 @@ public class ByteFunctionHelpers {
     }
 
     while (n > 7) {
-      long leftLong = MemoryUtil.UNSAFE.getLong(lPos);
-      long rightLong = MemoryUtil.UNSAFE.getLong(rPos);
+      long leftLong = MemoryUtil.getLong(lPos);
+      long rightLong = MemoryUtil.getLong(rPos);
       if (leftLong != rightLong) {
         if (LITTLE_ENDIAN) {
           return unsignedLongCompare(Long.reverseBytes(leftLong), Long.reverseBytes(rightLong));
@@ -185,8 +185,8 @@ public class ByteFunctionHelpers {
     }
 
     if (n > 3) {
-      int leftInt = MemoryUtil.UNSAFE.getInt(lPos);
-      int rightInt = MemoryUtil.UNSAFE.getInt(rPos);
+      int leftInt = MemoryUtil.getInt(lPos);
+      int rightInt = MemoryUtil.getInt(rPos);
       if (leftInt != rightInt) {
         if (LITTLE_ENDIAN) {
           return unsignedIntCompare(Integer.reverseBytes(leftInt), Integer.reverseBytes(rightInt));
@@ -200,8 +200,8 @@ public class ByteFunctionHelpers {
     }
 
     while (n-- != 0) {
-      byte leftByte = MemoryUtil.UNSAFE.getByte(lPos);
-      byte rightByte = MemoryUtil.UNSAFE.getByte(rPos);
+      byte leftByte = MemoryUtil.getByte(lPos);
+      byte rightByte = MemoryUtil.getByte(rPos);
       if (leftByte != rightByte) {
         return ((leftByte & 0xFF) - (rightByte & 0xFF)) > 0 ? 1 : -1;
       }
@@ -273,8 +273,8 @@ public class ByteFunctionHelpers {
     int rPos = rStart;
 
     while (n > 7) {
-      long leftLong = MemoryUtil.UNSAFE.getLong(lPos);
-      long rightLong = MemoryUtil.UNSAFE.getLong(right, MemoryUtil.BYTE_ARRAY_BASE_OFFSET + rPos);
+      long leftLong = MemoryUtil.getLong(lPos);
+      long rightLong = MemoryUtil.getLong(right, rPos);
       if (leftLong != rightLong) {
         if (LITTLE_ENDIAN) {
           return unsignedLongCompare(Long.reverseBytes(leftLong), Long.reverseBytes(rightLong));
@@ -288,8 +288,8 @@ public class ByteFunctionHelpers {
     }
 
     if (n > 3) {
-      int leftInt = MemoryUtil.UNSAFE.getInt(lPos);
-      int rightInt = MemoryUtil.UNSAFE.getInt(right, MemoryUtil.BYTE_ARRAY_BASE_OFFSET + rPos);
+      int leftInt = MemoryUtil.getInt(lPos);
+      int rightInt = MemoryUtil.getInt(right, rPos);
       if (leftInt != rightInt) {
         if (LITTLE_ENDIAN) {
           return unsignedIntCompare(Integer.reverseBytes(leftInt), Integer.reverseBytes(rightInt));
@@ -303,7 +303,7 @@ public class ByteFunctionHelpers {
     }
 
     while (n-- != 0) {
-      byte leftByte = MemoryUtil.UNSAFE.getByte(lPos);
+      byte leftByte = MemoryUtil.getByte(lPos);
       byte rightByte = right[rPos];
       if (leftByte != rightByte) {
         return ((leftByte & 0xFF) - (rightByte & 0xFF)) > 0 ? 1 : -1;
