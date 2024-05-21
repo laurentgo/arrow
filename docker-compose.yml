@@ -1711,10 +1711,12 @@ services:
     # Usage:
     #   docker-compose build java
     #   docker-compose run java
-    # Parameters:
-    #   MAVEN: 3.9.5
-    #   JDK: 8, 11, 17, 21
-    image: ghcr.io/laurentgo/multi-jdk-maven-image:main
+    image: ${REPO}:${ARCH}-java
+    build:
+      context: .
+      dockerfile: ci/docker/java.dockerfile
+      cache_from:
+        - ${REPO}:${ARCH}-java
     shm_size: *shm-size
     volumes: &java-volumes
       - .:/arrow:delegated
