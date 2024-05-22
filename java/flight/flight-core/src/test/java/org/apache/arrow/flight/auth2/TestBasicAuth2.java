@@ -58,13 +58,11 @@ public class TestBasicAuth2 {
   private static final String PASSWORD_2 = "woohoo2";
   private static BufferAllocator allocator;
   private static FlightServer server;
-  private static FlightClient client;
-  private static FlightClient client2;
 
   @BeforeAll
   public static void setup() throws Exception {
     allocator = new RootAllocator(Long.MAX_VALUE);
-    startServerAndClient();
+    startServer();
   }
 
   private static FlightProducer getFlightProducer() {
@@ -98,22 +96,18 @@ public class TestBasicAuth2 {
     };
   }
 
-  private static void startServerAndClient() throws IOException {
+  private static void startServer() throws IOException {
     final FlightProducer flightProducer = getFlightProducer();
     server = FlightServer
         .builder(allocator, forGrpcInsecure(LOCALHOST, 0), flightProducer)
         .headerAuthenticator(new GeneratedBearerTokenAuthenticator(
             new BasicCallHeaderAuthenticator(TestBasicAuth2::validate)))
         .build().start();
-    client = FlightClient.builder(allocator, server.getLocation())
-        .build();
   }
 
   @AfterAll
   public static void shutdown() throws Exception {
-    AutoCloseables.close(client, client2, server);
-    client = null;
-    client2 = null;
+    AutoCloseables.close(server);
     server = null;
 
     allocator.getChildAllocators().forEach(BufferAllocator::close);
@@ -121,8 +115,8 @@ public class TestBasicAuth2 {
     allocator = null;
   }
 
-  private void startClient2() throws IOException {
-    client2 = FlightClient.builder(allocator, server.getLocation())
+  private static FlightClient newClient() throws IOException {
+    return FlightClient.builder(allocator, server.getLocation())
         .build();
   }
 
@@ -142,42 +136,52 @@ public class TestBasicAuth2 {
   }
 
   @Test
-  public void validAuthWithBearerAuthServer() throws IOException {
-    testValidAuth(client);
+  public void validAuthWithBearerAuthServer() throws Exception {
+    try (FlightClient client = newClient()) {
+      testValidAuth(client);
+    }
   }
 
   @Test
-  public void validAuthWithMultipleClientsWithSameCredentialsWithBearerAuthServer() throws IOException {
-    startClient2();
-    testValidAuthWithMultipleClientsWithSameCredentials(client, client2);
+  public void validAuthWithMultipleClientsWithSameCredentialsWithBearerAuthServer() throws Exception {
+    try (FlightClient client = newClient(); FlightClient client2 = newClient()) {
+      testValidAuthWithMultipleClientsWithSameCredentials(client, client2);
+    }
   }
 
   @Test
-  public void validAuthWithMultipleClientsWithDifferentCredentialsWithBearerAuthServer() throws IOException {
-    startClient2();
-    testValidAuthWithMultipleClientsWithDifferentCredentials(client, client2);
+  public void validAuthWithMultipleClientsWithDifferentCredentialsWithBearerAuthServer() throws Exception {
+    try (FlightClient client = newClient(); FlightClient client2 = newClient()) {
+      testValidAuthWithMultipleClientsWithDifferentCredentials(client, client2);
+    }
   }
 
   @Test
   public void asyncCall() throws Exception {
-    final CredentialCallOption bearerToken = client
-        .authenticateBasicToken(USERNAME_1, PASSWORD_1).get();
-    client.listFlights(Criteria.ALL, bearerToken);
-    try (final FlightStream s = client.getStream(new Ticket(new byte[1]), bearerToken)) {
-      while (s.next()) {
-        Assertions.assertEquals(4095, s.getRoot().getRowCount());
+    try (FlightClient client = newClient()) {
+      final CredentialCallOption bearerToken = client
+          .authenticateBasicToken(USERNAME_1, PASSWORD_1).get();
+      client.listFlights(Criteria.ALL, bearerToken);
+      try (final FlightStream s = client.getStream(new Ticket(new byte[1]), bearerToken)) {
+        while (s.next()) {
+          Assertions.assertEquals(4095, s.getRoot().getRowCount());
+        }
       }
     }
   }
 
   @Test
-  public void invalidAuthWithBearerAuthServer() throws IOException {
-    testInvalidAuth(client);
+  public void invalidAuthWithBearerAuthServer() throws Exception {
+    try (FlightClient client = newClient()) {
+      testInvalidAuth(client);
+    }
   }
 
   @Test
-  public void didntAuthWithBearerAuthServer() throws IOException {
-    didntAuth(client);
+  public void didntAuthWithBearerAuthServer() throws Exception {
+    try (FlightClient client = newClient()) {
+      didntAuth(client);
+    }
   }
 
   private void testValidAuth(FlightClient client) {
