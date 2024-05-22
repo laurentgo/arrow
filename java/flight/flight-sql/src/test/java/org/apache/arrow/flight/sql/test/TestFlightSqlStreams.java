@@ -205,14 +205,17 @@ public class TestFlightSqlStreams {
   @BeforeAll
   public static void setUp() throws Exception {
     allocator = new RootAllocator(Integer.MAX_VALUE);
+    BufferAllocator serverAllocator = allocator.newChildAllocator("server", 0, Integer.MAX_VALUE);
+    BufferAllocator producerAllocator = allocator.newChildAllocator("producer", 0, Integer.MAX_VALUE);
+    BufferAllocator clientAllocator = allocator.newChildAllocator("client", 0, Integer.MAX_VALUE);
 
     final Location serverLocation = Location.forGrpcInsecure("localhost", 0);
-    server = FlightServer.builder(allocator, serverLocation, new FlightSqlTestProducer(allocator))
+    server = FlightServer.builder(serverAllocator, serverLocation, new FlightSqlTestProducer(producerAllocator))
         .build()
         .start();
 
     final Location clientLocation = Location.forGrpcInsecure("localhost", server.getPort());
-    sqlClient = new FlightSqlClient(FlightClient.builder(allocator, clientLocation).build());
+    sqlClient = new FlightSqlClient(FlightClient.builder(clientAllocator, clientLocation).build());
   }
 
   @AfterAll

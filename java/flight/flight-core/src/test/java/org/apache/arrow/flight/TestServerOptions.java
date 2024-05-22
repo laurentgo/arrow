@@ -41,7 +41,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
-import io.grpc.Channel;
+import io.grpc.ManagedChannel;
 import io.grpc.MethodDescriptor;
 import io.grpc.ServerServiceDefinition;
 import io.grpc.health.v1.HealthCheckRequest;
@@ -188,12 +188,16 @@ public class TestServerOptions {
         FlightServer s = FlightServer.builder(a, location, producer)
             .transportHint("grpc.builderConsumer", consumer).build().start();
     ) {
-      Channel channel = NettyChannelBuilder.forAddress(location.toSocketAddress()).usePlaintext().build();
-      HealthCheckResponse response = HealthGrpc
-              .newBlockingStub(channel)
-              .check(HealthCheckRequest.getDefaultInstance());
+      ManagedChannel channel = NettyChannelBuilder.forAddress(location.toSocketAddress()).usePlaintext().build();
+      try {
+        HealthCheckResponse response = HealthGrpc
+                .newBlockingStub(channel)
+                .check(HealthCheckRequest.getDefaultInstance());
 
-      assertEquals(response.getStatus(), HealthCheckResponse.ServingStatus.SERVING);
+        assertEquals(response.getStatus(), HealthCheckResponse.ServingStatus.SERVING);
+      } finally {
+        channel.shutdown();
+      }
     }
   }
 }

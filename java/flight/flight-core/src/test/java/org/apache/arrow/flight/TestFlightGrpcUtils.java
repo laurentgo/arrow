@@ -80,7 +80,7 @@ public class TestFlightGrpcUtils {
    * @throws IOException If server fails to start.
    */
   @Test
-  public void testMultipleGrpcServices() throws IOException {
+  public void testMultipleGrpcServices() throws IOException, InterruptedException {
     //Initializes channel so that multiple clients can communicate with server
     final ManagedChannel managedChannel = InProcessChannelBuilder.forName(serverName)
             .directExecutor()
@@ -88,14 +88,17 @@ public class TestFlightGrpcUtils {
 
     //Defines flight client and calls service method. Since we use a NoOpFlightProducer we expect the service
     //to throw a RunTimeException
-    final FlightClient flightClient = FlightGrpcUtils.createFlightClient(allocator, managedChannel);
-    final Iterable<ActionType> actionTypes = flightClient.listActions();
-    assertThrows(FlightRuntimeException.class, () -> actionTypes.forEach(
-        actionType -> System.out.println(actionType.toString())));
+    try (final FlightClient flightClient = FlightGrpcUtils.createFlightClient(allocator, managedChannel)) {
+      final Iterable<ActionType> actionTypes = flightClient.listActions();
+      assertThrows(FlightRuntimeException.class, () -> actionTypes.forEach(
+          actionType -> System.out.println(actionType.toString())));
 
-    //Define Test client as a blocking stub and call test method which correctly returns an empty protobuf object
-    final TestServiceGrpc.TestServiceBlockingStub blockingStub = TestServiceGrpc.newBlockingStub(managedChannel);
-    Assertions.assertEquals(Empty.newBuilder().build(), blockingStub.test(Empty.newBuilder().build()));
+      //Define Test client as a blocking stub and call test method which correctly returns an empty protobuf object
+      final TestServiceGrpc.TestServiceBlockingStub blockingStub = TestServiceGrpc.newBlockingStub(managedChannel);
+      Assertions.assertEquals(Empty.newBuilder().build(), blockingStub.test(Empty.newBuilder().build()));
+    } finally {
+      managedChannel.shutdownNow();
+    }
   }
 
   @Test
@@ -107,14 +110,16 @@ public class TestFlightGrpcUtils {
 
     //Defines flight client and calls service method. Since we use a NoOpFlightProducer we expect the service
     //to throw a RunTimeException
-    final FlightClient flightClient = FlightGrpcUtils.createFlightClientWithSharedChannel(allocator, managedChannel);
-
-    // Should be a no-op.
-    flightClient.close();
-    Assertions.assertFalse(managedChannel.isShutdown());
-    Assertions.assertFalse(managedChannel.isTerminated());
-    Assertions.assertEquals(ConnectivityState.IDLE, managedChannel.getState(false));
-    managedChannel.shutdownNow();
+    try (final FlightClient flightClient = FlightGrpcUtils
+        .createFlightClientWithSharedChannel(allocator, managedChannel)) {
+      // Should be a no-op.
+      flightClient.close();
+      Assertions.assertFalse(managedChannel.isShutdown());
+      Assertions.assertFalse(managedChannel.isTerminated());
+      Assertions.assertEquals(ConnectivityState.IDLE, managedChannel.getState(false));
+    } finally {
+      managedChannel.shutdownNow();
+    }
   }
 
   @Test
