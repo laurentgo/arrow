@@ -64,16 +64,26 @@ public class TestDoExchange {
   @BeforeEach
   public void setUp() throws Exception {
     allocator = new RootAllocator(Integer.MAX_VALUE);
+    BufferAllocator serverAllocator = allocator.newChildAllocator("server", 0, Integer.MAX_VALUE);
+    BufferAllocator producerAllocator = allocator.newChildAllocator("producer", 0, Integer.MAX_VALUE);
+    BufferAllocator clientAllocator = allocator.newChildAllocator("client", 0, Integer.MAX_VALUE);
+
     final Location serverLocation = Location.forGrpcInsecure(FlightTestUtil.LOCALHOST, 0);
-    server = FlightServer.builder(allocator, serverLocation, new Producer(allocator)).build();
+    server = FlightServer.builder(serverAllocator, serverLocation, new Producer(producerAllocator)).build();
     server.start();
     final Location clientLocation = Location.forGrpcInsecure(FlightTestUtil.LOCALHOST, server.getPort());
-    client = FlightClient.builder(allocator, clientLocation).build();
+    client = FlightClient.builder(clientAllocator, clientLocation).build();
   }
 
   @AfterEach
   public void tearDown() throws Exception {
-    AutoCloseables.close(client, server, allocator);
+    AutoCloseables.close(client, server);
+ 
+    // Manually close all child allocators.
+    if (allocator != null) {
+      allocator.getChildAllocators().forEach(BufferAllocator::close);
+      AutoCloseables.close(allocator);
+    }
   }
 
   /** Test a pure-metadata flow. */
