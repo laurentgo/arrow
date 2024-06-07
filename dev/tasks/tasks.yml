@@ -1446,15 +1446,15 @@ tasks:
   {% endfor %}
 
   # be sure to update binary-task.rb when upgrading ubuntu
-  test-debian-12-docs:
+  test-ubuntu-20.04-docs:
     ci: github
     template: docs/github.linux.yml
     params:
       env:
-        JDK: 17
+        JDK: 21
       pr_number: Unset
       flags: "-v $PWD/build/:/build/"
-      image: debian-docs
+      image: ubuntu-docs
       publish: false
     artifacts:
       - docs.tar.gz
@@ -1582,8 +1582,8 @@ tasks:
     template: docs/github.linux.yml
     params:
       env:
-        JDK: 17
+        JDK: 21
       pr_number: Unset
       flags: "-v $PWD/build/:/build/"
-      image: debian-docs
+      image: ubuntu-docs
       publish: true
